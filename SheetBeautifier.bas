@@ -1,7 +1,6 @@
-Attribute VB_Name = "Module1"
-Sub create_sheets()
+Sub SheetBeautifier()
 
-Dim gradArray(283, 1, 2) As Integer
+Dim gradArray(283, 1, 2) As Long
 
 Dim numSheets As Long
 Dim Sht As Worksheet
@@ -1737,11 +1736,16 @@ redEnd = gradArray(gradientSelector, 1, 0)
 greenEnd = gradArray(gradientSelector, 1, 1)
 blueEnd = gradArray(gradientSelector, 1, 2)
 
-redStep = (redEnd - redStart) / numSheets
-greenStep = (greenEnd - greenStart) / numSheets
-blueStep = (blueEnd - blueStart) / numSheets
+redStep = WorksheetFunction.RoundDown(((redEnd - redStart) / numSheets), 0)
+greenStep = WorksheetFunction.RoundDown(((greenEnd - greenStart) / numSheets), 0)
+blueStep = WorksheetFunction.RoundDown(((blueEnd - blueStart) / numSheets), 0)
 
-For Each Sht In Application.Worksheets
+If redStep < numSheets Then redStep = 0
+If greenStep < numSheets Then greenStep = 0
+If blueStep < numSheets Then blueStep = 0
+
+
+For Each Sht In ActiveWorkbook.Worksheets
     Sht.Tab.Color = RGB(redStart, greenStart, blueStart)
     redStart = redStart + redStep
     greenStart = greenStart + greenStep
